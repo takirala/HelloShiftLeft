@@ -2,11 +2,15 @@
 # vi:syntax=python
 
 load("github.com/mesosphere/dispatch-catalog/starlark/stable/pipeline@master", "git_resource", "pull_request")
-load("github.com/mesosphere/dispatch-catalog/starlark/experimental/shiftleft@tga/test-shiftleft", "sast_scan")
+load("github.com/ShiftLeftSecurity/sast-scan/starlark/scan@master", "sast_scan")
+load("github.com/mesosphere/dispatch-catalog/starlark/stable/k8s@master", "secret_var")
 
 git = git_resource("helloworld-git")
 
-sast_scan("sastscan-check", git, extra_scan_options=["--build"])
+sast_scan("sastscan-check", git, extra_scan_options=["--build"], env=[
+    k8s.corev1.EnvVar(name = "SCAN_DEBUG_MODE", value = "debug"),
+    k8s.corev1.EnvVar(name = "GITHUB_TOKEN", valueFrom = secret_var("helloshiftleft-scmsecret", "password"))
+])
 
 action(tasks=["sastscan-check"], on=pull_request())
 action(tasks=["sastscan-check"], on=pull_request(chatops=["build"]))
