@@ -11,5 +11,6 @@ sast_scan("sastscan-check", git, env=[
     k8s.corev1.EnvVar(name = "GITHUB_TOKEN", valueFrom = secret_var("helloshiftleft-scmsecret", "password"))
 ])
 
+# Add triggersd for pull requests
 action(tasks=["sastscan-check"], on=pull_request())
 action(tasks=["sastscan-check"], on=pull_request(chatops=["build"]))
