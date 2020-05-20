@@ -68,4 +68,4 @@ A reflected XSS vulnerability exists in the application and can be triggered usi
 
 It raises and alert dialogue and returns the Customer object data.
 
-aws_access_key_id=‘AKIAIO5FODNN7EXAMPLE'
+aws_access_key_id="AKIAIO5FODNN7EXAMPLE"
