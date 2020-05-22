@@ -8,10 +8,19 @@ load("github.com/mesosphere/dispatch-catalog/starlark/stable/k8s@master", "secre
 
 git = git_resource("helloworld-git")
 
-#Task: vulnerability scanning
 sast_scan("sastscan-check", git, env=[
-    k8s.corev1.EnvVar(name = "GITHUB_TOKEN", valueFrom = secret_var("helloshiftleft-scmsecret", "password"))
-])
+k8s.corev1.EnvVar(name = "GITHUB_TOKEN", valueFrom = secret_var("helloshiftleft-scmsecret", "password"))
+],
+resources = k8s.corev1.ResourceRequirements(
+    requests = {
+        "cpu": k8s.resource_quantity("1"),
+        "memory": k8s.resource_quantity("8Gi")
+    },
+    limits = {
+        "cpu": k8s.resource_quantity("1"),
+        "memory": k8s.resource_quantity("8Gi")
+    }),
+)
 
 #Actions that define trigger to execute tasks
 action(tasks=["sastscan-check"], on=pull_request())
