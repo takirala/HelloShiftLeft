@@ -14,7 +14,11 @@ k8s.corev1.EnvVar(name = "GITHUB_TOKEN", valueFrom = secret_var("helloshiftleft-
 resources = k8s.corev1.ResourceRequirements(
     requests = {
         "cpu": k8s.resource_quantity("1"),
-        "memory": k8s.resource_quantity("4Gi")
+        "memory": k8s.resource_quantity("8Gi")
+    },
+    limits = {
+        "cpu": k8s.resource_quantity("1"),
+        "memory": k8s.resource_quantity("8Gi")
     }),
 )
 
